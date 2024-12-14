@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Header</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header Styling */
+        .header {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background-size: 400% 400%; /* Make the gradient span wider for smooth animation */
+            color: white;
+            padding: 20px 30px;
+            position: relative;
+            animation: colorChange 10s infinite; /* Add animation */
+        }
+
+        @keyframes colorChange {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: 1px solid white;
+            border-radius: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .nav a:hover {
+            background: white;
+            color: #2575fc;
+        }
+
+        /* Optional Decorative Elements */
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 5px;
+            background: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>Welcome to GameTracker</h1>
+    <p>Track your favorite games in style</p>
+    <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash of Clans - Base Links</title>
+  <style>
+    /* Styling for the overall body */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d; /* Dark background for contrast */
+      color: #ffffff;
+      text-align: center;
+    }
+
+    /* Header section styles */
+    header {
+      background-color: #f2a900; /* Golden theme for Clash of Clans */
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+
+    /* Grid layout for base cards */
+    .townhall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid layout */
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Individual Town Hall card styles */
+    .townhall {
+      cursor: pointer;
+    }
+    .townhall img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .townhall img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal styling */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.3s, opacity 0.3s; /* Fade-in effect */
+    }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Modal content styling */
+    .modal-content {
+      background: #333; /* Dark background for modal */
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: left;
+    }
+    .modal-content h2 {
+      margin: 0 0 10px;
+    }
+
+    .base-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #4caf50; /* Green background */
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .base-link:hover {
+      background-color: #45a049; /* Darker green on hover */
+    }
+
+    .close-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #f44336; /* Red background */
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background-color: #d32f2f; /* Darker red on hover */
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Clash of Clans Base Links</h1>
+</header>
+
+<div class="townhall-grid" id="townhallGrid">
+  <!-- Town Hall cards will be dynamically inserted here -->
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="townhallTitle"></h2>
+    <div id="townhallDescription"></div>
+    <a id="baseLink" href="#" target="_blank" class="base-link">Open Base Link</a>
+    <a class="close-btn" onclick="closeModal()">Close</a>
+  </div>
+</div>
+
+<script>
+  // Town Hall Data
+  const townHalls = [
+    { level: 1, image: "img/Screenshot 2024-12-14 at 15.19.42.png", description: "Warbase for townhall 17 players!!!", link: "https://link.clashofclans.com/en/?action=OpenLayout&id=TH17%3AWB%3AAAAAVwAAAAG1WPfBadMc5J_8xu8Nzf-Q" },
+    { level: 17, image: "img/Screenshot 2024-12-14 at 15.17.34.png", description: "Great townhall 17 base for farming", link: "https://link.clashofclans.com/en/?action=OpenLayout&id=TH17%3AHV%3AAAAAVwAAAAG1dOYYlMfdtcmQSfkpt2Iz" },
+    { level: 17, image: "img/Screenshot 2024-12-14 at 15.11.56.png", description: "Latest Town Hall with the most powerful upgrades.", link: "https://link.clashofclans.com/en/?action=OpenLayout&id=TH17%3AHV%3AAAAAVwAAAAG1epGd_VjvIQSOhKiTM3Xd" }
+  ];
+
+  // Get elements for the town hall grid and modal
+  const townhallGrid = document.getElementById("townhallGrid");
+  const modal = document.getElementById("modal");
+  const townhallTitle = document.getElementById("townhallTitle");
+  const townhallDescription = document.getElementById("townhallDescription");
+  const baseLink = document.getElementById("baseLink");
+
+  // Function to open the modal with town hall details
+  function openModal(title, description, link) {
+    townhallTitle.textContent = title;
+    townhallDescription.innerHTML = description;
+    baseLink.href = link; // Set the link dynamically
+    modal.classList.add("active");
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.classList.remove("active");
+  }
+
+  // Dynamically add town hall cards to the grid
+  townHalls.forEach(th => {
+    const townhallCard = document.createElement("div");
+    townhallCard.className = "townhall";
+    townhallCard.innerHTML = `<img src="${th.image}" alt="Town Hall ${th.level}" />`;
+    townhallCard.onclick = () => openModal(`Town Hall ${th.level}`, th.description, th.link);
+    townhallGrid.appendChild(townhallCard);
+  });
+</script>
+</body>
+</html>
