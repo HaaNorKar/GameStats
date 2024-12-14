@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Smash Bros. - Character Info</title>
+  <style>
+    /* Styling for the overall body */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212; /* Dark background for better contrast */
+      color: #ffffff;
+      text-align: center;
+    }
+
+    /* Header section styles */
+    header {
+      background-color: #3d348b; /* Purple for a Smash Bros. theme */
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+
+    /* Grid layout for character cards */
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Individual character card styles */
+    .character {
+      cursor: pointer;
+    }
+    .character img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .character img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal styling */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.3s, opacity 0.3s;
+    }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Modal content styling */
+    .modal-content {
+      background: #333;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: left;
+    }
+    .modal-content h2 {
+      margin: 0 0 10px;
+    }
+
+    /* Close button styling */
+    .close-btn {
+      background: #a00000;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Super Smash Bros. - Character Info</h1>
+</header>
+
+<div class="character-grid" id="characterGrid">
+  <!-- Character cards will be dynamically inserted here -->
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="characterName"></h2>
+    <div id="characterDescription"></div>
+    <button class="close-btn" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  const characters = [
+    // Mario Series
+    {
+      name: "Mario",
+      image: "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Fireball</li>
+                    <li><strong>Side Special:</strong> Cape</li>
+                    <li><strong>Up Special:</strong> Super Jump Punch</li>
+                    <li><strong>Down Special:</strong> F.L.U.D.D.</li>
+                  </ul>`
+    },
+    {
+      name: "Luigi",
+      image: "https://upload.wikimedia.org/wikipedia/en/6/6e/Luigi_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Fireball</li>
+                    <li><strong>Side Special:</strong> Green Missile</li>
+                    <li><strong>Up Special:</strong> Super Jump Punch</li>
+                    <li><strong>Down Special:</strong> Luigi Cyclone</li>
+                  </ul>`
+    },
+    {
+      name: "Peach",
+      image: "https://upload.wikimedia.org/wikipedia/en/e/e6/Peach_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Toad</li>
+                    <li><strong>Side Special:</strong> Peach Bomber</li>
+                    <li><strong>Up Special:</strong> Peach Parasol</li>
+                    <li><strong>Down Special:</strong> Vegetable</li>
+                  </ul>`
+    },
+    {
+      name: "Bowser",
+      image: "https://upload.wikimedia.org/wikipedia/en/4/4e/Bowser_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Fire Breath</li>
+                    <li><strong>Side Special:</strong> Flying Slam</li>
+                    <li><strong>Up Special:</strong> Whirling Fortress</li>
+                    <li><strong>Down Special:</strong> Bowser Bomb</li>
+                  </ul>`
+    },
+    {
+      name: "Dr. Mario",
+      image: "https://upload.wikimedia.org/wikipedia/en/c/cc/Dr._Mario_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Megavitamin</li>
+                    <li><strong>Side Special:</strong> Super Sheet</li>
+                    <li><strong>Up Special:</strong> Super Jump Punch</li>
+                    <li><strong>Down Special:</strong> Dr. Tornado</li>
+                  </ul>`
+    },
+
+    // Donkey Kong Series
+    {
+      name: "Donkey Kong",
+      image: "https://upload.wikimedia.org/wikipedia/en/8/82/Donkey_Kong_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Donkey Kong</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Giant Punch</li>
+                    <li><strong>Side Special:</strong> Headbutt</li>
+                    <li><strong>Up Special:</strong> Spinning Kong</li>
+                    <li><strong>Down Special:</strong> Hand Slap</li>
+                  </ul>`
+    },
+    {
+      name: "Diddy Kong",
+      image: "https://upload.wikimedia.org/wikipedia/en/5/5c/Diddy_Kong_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Donkey Kong</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Peanut Popgun</li>
+                    <li><strong>Side Special:</strong> Monkey Flip</li>
+                    <li><strong>Up Special:</strong> Rocketbarrel Boost</li>
+                    <li><strong>Down Special:</strong> Banana Peel</li>
+                  </ul>`
+    },
+
+    // The Legend of Zelda Series
+    {
+      name: "Link",
+      image: "https://upload.wikimedia.org/wikipedia/en/f/f0/Link_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> The Legend of Zelda</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Bow and Arrows</li>
+                    <li><strong>Side Special:</strong> Boomerang</li>
+                    <li><strong>Up Special:</strong> Spin Attack</li>
+                    <li><strong>Down Special:</strong> Remote Bomb</li>
+                  </ul>`
+    },
+    {
+      name: "Zelda",
+      image: "https://upload.wikimedia.org/wikipedia/en/d/d2/Zelda_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> The Legend of Zelda</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Nayru's Love</li>
+                    <li><strong>Side Special:</strong> Din's Fire</li>
+                    <li><strong>Up Special:</strong> Farore's Wind</li>
+                    <li><strong>Down Special:</strong> Phantom Slash</li>
+                  </ul>`
+    },
+    {
+      name: "Ganondorf",
+      image: "https://upload.wikimedia.org/wikipedia/en/a/a5/Ganondorf_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> The Legend of Zelda</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Warlock Punch</li>
+                    <li><strong>Side Special:</strong> Flame Choke</li>
+                    <li><strong>Up Special:</strong> Dark Dive</li>
+                    <li><strong>Down Special:</strong> Wizard's Foot</li>
+                  </ul>`
+    },
+
+    // Add more characters here...
+
+
+  {
+      name: "Mario",
+      image: "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Fireball</li>
+                    <li><strong>Side Special:</strong> Cape</li>
+                    <li><strong>Up Special:</strong> Super Jump Punch</li>
+                    <li><strong>Down Special:</strong> F.L.U.D.D.</li>
+                  </ul>`
+    },
+    {
+      name: "Donkey Kong",
+      image: "https://upload.wikimedia.org/wikipedia/en/8/82/Donkey_Kong_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Donkey Kong</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Giant Punch</li>
+                    <li><strong>Side Special:</strong> Headbutt</li>
+                    <li><strong>Up Special:</strong> Spinning Kong</li>
+                    <li><strong>Down Special:</strong> Hand Slap</li>
+                  </ul>`
+    },
+    {
+      name: "Link",
+      image: "https://upload.wikimedia.org/wikipedia/en/f/f0/Link_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> The Legend of Zelda</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Bow and Arrows</li>
+                    <li><strong>Side Special:</strong> Boomerang</li>
+                    <li><strong>Up Special:</strong> Spin Attack</li>
+                    <li><strong>Down Special:</strong> Remote Bomb</li>
+                  </ul>`
+    },
+    {
+      name: "Samus",
+      image: "https://upload.wikimedia.org/wikipedia/en/3/3a/Samus_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Metroid</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Charge Shot</li>
+                    <li><strong>Side Special:</strong> Missile</li>
+                    <li><strong>Up Special:</strong> Screw Attack</li>
+                    <li><strong>Down Special:</strong> Bomb</li>
+                  </ul>`
+    },
+    {
+      name: "Kirby",
+      image: "https://upload.wikimedia.org/wikipedia/en/a/aa/Kirby_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Kirby</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Inhale</li>
+                    <li><strong>Side Special:</strong> Hammer Flip</li>
+                    <li><strong>Up Special:</strong> Final Cutter</li>
+                    <li><strong>Down Special:</strong> Stone</li>
+                  </ul>`
+    },
+    {
+      name: "Fox",
+      image: "https://upload.wikimedia.org/wikipedia/en/7/75/Fox_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Star Fox</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Blaster</li>
+                    <li><strong>Side Special:</strong> Fox Illusion</li>
+                    <li><strong>Up Special:</strong> Fire Fox</li>
+                    <li><strong>Down Special:</strong> Reflector</li>
+                  </ul>`
+    },
+    {
+      name: "Pikachu",
+      image: "https://upload.wikimedia.org/wikipedia/en/0/06/Pikachu_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Pokémon</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Thunder Jolt</li>
+                    <li><strong>Side Special:</strong> Skull Bash</li>
+                    <li><strong>Up Special:</strong> Quick Attack</li>
+                    <li><strong>Down Special:</strong> Thunder</li>
+                  </ul>`
+    },
+    {
+      name: "Captain Falcon",
+      image: "https://upload.wikimedia.org/wikipedia/en/2/22/Captain_Falcon_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> F-Zero</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Falcon Punch</li>
+                    <li><strong>Side Special:</strong> Raptor Boost</li>
+                    <li><strong>Up Special:</strong> Falcon Dive</li>
+                    <li><strong>Down Special:</strong> Falcon Kick</li>
+                  </ul>`
+    },
+    {
+      name: "Yoshi",
+      image: "https://upload.wikimedia.org/wikipedia/en/8/84/Yoshi_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Yoshi</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Egg Lay</li>
+                    <li><strong>Side Special:</strong> Egg Roll</li>
+                    <li><strong>Up Special:</strong> Egg Throw</li>
+                    <li><strong>Down Special:</strong> Yoshi Bomb</li>
+                  </ul>`
+    },
+    {
+      name: "Luigi",
+      image: "https://upload.wikimedia.org/wikipedia/en/6/6e/Luigi_Smash_Ultimate.png",
+      description: `<p><strong>Series:</strong> Super Mario</p>
+                  <h3>Abilities</h3>
+                  <ul>
+                    <li><strong>Neutral Special:</strong> Fireball</li>
+                    <li><strong>Side Special:</strong> Green Missile</li>
+                    <li><strong>Up Special:</strong> Super Jump Punch</li>
+                    <li><strong>Down Special:</strong> Luigi Cyclone</li>
+                  </ul>`
+    }
+  ];
+
+
+  // Get elements for the character grid and modal
+  const characterGrid = document.getElementById("characterGrid");
+  const modal = document.getElementById("modal");
+  const characterName = document.getElementById("characterName");
+  const characterDescription = document.getElementById("characterDescription");
+
+  // Function to open the modal with character details
+  function openModal(name, description) {
+    characterName.textContent = name;
+    characterDescription.innerHTML = description;
+    modal.classList.add("active");
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.classList.remove("active");
+  }
+
+  // Dynamically add character cards to the grid
+  characters.forEach(character => {
+    const characterCard = document.createElement("div");
+    characterCard.className = "character";
+    characterCard.innerHTML = `<img src="${character.image}" alt="${character.name}" />`;
+    characterCard.onclick = () => openModal(character.name, character.description);
+    characterGrid.appendChild(characterCard);
+  });
+</script>
+</body>
+</html>

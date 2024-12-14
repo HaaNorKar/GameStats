@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash of Clans - Town Hall Levels</title>
+  <style>
+    /* Styling for the overall body */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d; /* Dark background for contrast */
+      color: #ffffff;
+      text-align: center;
+    }
+
+    /* Header section styles */
+    header {
+      background-color: #f2a900; /* Golden theme for Clash of Clans */
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+
+    /* Grid layout for buttons */
+    .townhall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid layout */
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Individual Town Hall card styles */
+    .townhall {
+      cursor: pointer;
+    }
+    .townhall img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .townhall img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal styling */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.3s, opacity 0.3s; /* Fade-in effect */
+    }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Modal content styling */
+    .modal-content {
+      background: #333; /* Dark background for modal */
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      text-align: left;
+    }
+    .modal-content h2 {
+      margin: 0 0 10px;
+    }
+
+    /* Close button styling */
+    .close-btn {
+      background: #f44336; /* Red button */
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Clash of Clans - Town Hall Levels</h1>
+</header>
+
+<div class="townhall-grid" id="townhallGrid">
+  <!-- Town Hall cards will be dynamically inserted here -->
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="townhallTitle"></h2>
+    <div id="townhallDescription"></div>
+    <button class="close-btn" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  const townHalls = [
+    { level: 1, image: "th1.jpg", description: "Basic Town Hall. Unlocks basic buildings and troops." },
+    { level: 2, image: "th2.jpg", description: "New defenses and upgrades are available." },
+    { level: 3, image: "th3.jpg", description: "Unlocks Clan Castle, enabling clan membership." },
+    { level: 4, image: "th4.jpg", description: "Introduces Air Defense and advanced troops." },
+    { level: 5, image: "th5.jpg", description: "Unlocks Wizard Tower and other upgrades." },
+    { level: 6, image: "th6.jpg", description: "Unlocks Healer troop and Air Sweeper defense." },
+    { level: 7, image: "th7.jpg", description: "Unlocks Dark Elixir and Barbarian King." },
+    { level: 8, image: "th8.jpg", description: "Unlocks new Dark Troops and powerful defenses." },
+    { level: 9, image: "th9.jpg", description: "Adds Archer Queen and X-Bows for defense." },
+    { level: 10, image: "th10.jpg", description: "Unlocks Inferno Towers and advanced troops." },
+    { level: 11, image: "th11.jpg", description: "Unlocks Eagle Artillery and the Grand Warden." },
+    { level: 12, image: "th12.jpg", description: "Giga Tesla is introduced in the Town Hall." },
+    { level: 13, image: "th13.jpg", description: "Giga Inferno and Scattershot defenses added." },
+    { level: 14, image: "th14.jpg", description: "Unlocks Pets and more advanced upgrades." },
+    { level: 15, image: "th15.jpg", description: "Advanced defenses and powerful upgrades." },
+    { level: 16, image: "th16.jpg", description: "Coming Soon! Exciting new features await." },
+    { level: 17, image: "th17.jpg", description: "Latest Town Hall with the most powerful upgrades." }
+  ];
+
+  // Get elements for the town hall grid and modal
+  const townhallGrid = document.getElementById("townhallGrid");
+  const modal = document.getElementById("modal");
+  const townhallTitle = document.getElementById("townhallTitle");
+  const townhallDescription = document.getElementById("townhallDescription");
+
+  // Function to open the modal with town hall details
+  function openModal(title, description) {
+    townhallTitle.textContent = title;
+    townhallDescription.innerHTML = description;
+    modal.classList.add("active");
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.classList.remove("active");
+  }
+
+  // Dynamically add town hall cards to the grid
+  townHalls.forEach(th => {
+    const townhallCard = document.createElement("div");
+    townhallCard.className = "townhall";
+    townhallCard.innerHTML = `<img src="${th.image}" alt="Town Hall ${th.level}" />`;
+    townhallCard.onclick = () => openModal(`Town Hall ${th.level}`, th.description);
+    townhallGrid.appendChild(townhallCard);
+  });
+</script>
+</body>
+</html>
