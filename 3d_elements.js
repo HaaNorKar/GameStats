@@ -96,26 +96,26 @@ window.addEventListener('mouseup', () => {
 
 // Animasjonsløkke
 function animate() {
-    requestAnimationFrame(animate); // Be om neste animasjonsramme
+    requestAnimationFrame(animate); // Ber om neste animasjonsramme
 
-    // Roter kuben kontinuerlig
+    // Holder kuben i en løkke slik at den roterer (Kontinuerlig)
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
 
-    // Flytt hver regndråpe nedover
+    //Setter regndråper til en retning (nedover)
     rainDrops.forEach(drop => {
-        drop.position.y -= 0.1; // Hastighet på nedoverbevegelsen
-        if (drop.position.y < -10) { // Hvis regndråpen faller under visningsområdet
+        drop.position.y -= 0.1; // Hastighet på retningen (nedover)
+        if (drop.position.y < -10) { // Hvis regndråpene faller under vinduet / visningsområdet
             drop.position.y = 20; // Reset Y-posisjon til toppen
             drop.position.x = (Math.random() - 0.5) * 50; // Tilfeldig X-posisjon
             drop.position.z = (Math.random() - 0.5) * 50; // Tilfeldig Z-posisjon
         }
     });
 
-    renderer.render(scene, camera); // Render scenen og kameraet
+    renderer.render(scene, camera); // "Render" tegner scenen slik kameraet ser den og viser dette på skjermen.
 }
 
-animate(); // Start animasjonen
+animate(); // Start animasjonener
 
 // Håndter endring av vindusstørrelse
 window.addEventListener('resize', () => {
