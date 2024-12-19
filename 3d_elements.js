@@ -118,8 +118,14 @@ function animate() {
 animate(); // Start animasjonener
 
 // Håndter endring av vindusstørrelse
+// Event-listeneren sørger for at kameraet og rendereren oppdateres når brukeren endrer størrelsen på nettleservinduet.
+// Sikrer at scenen alltid vises korrekt og fyller hele skjermen uten forvrengning/feiler.
 window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight; // Oppdater kameraets aspektforhold
+    // Oppdater kameraets aspektforhold(hva kamaret ser) basert på nettleserens bredde og høyde
+    // Sikrer at bildet ikke blir strukket eller klemt når vinduet endres.
+    camera.aspect = window.innerWidth / window.innerHeight; 
     camera.updateProjectionMatrix(); // Oppdater projeksjonsmatrisen
+    // Kameraets nye aspektforhold skal tas hensyn til når 3D-koordinater går til 2D.
     renderer.setSize(window.innerWidth, window.innerHeight); // Oppdater renderer-størrelse
+    // Sørger for at renderingsområdet tilpasser seg hele nettleservinduet uten å forvrenge innholdet.
 });
