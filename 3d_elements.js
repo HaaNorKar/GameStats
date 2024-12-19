@@ -55,7 +55,7 @@ let dragOffset = { x: 0, y: 0 }; // For å holde styr på avstanden mellom musep
 
 // Legg til dra-funksjonalitet for kuben
 window.addEventListener('mousedown', (event) => {
-    // Bruk raycasting for å sjekke om kuben blir klikket
+    // her bruker vi raycasting for å sjekke om kuben blir klikket
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1, // Normaliser musekoordinater (X)
