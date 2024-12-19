@@ -72,22 +72,38 @@ window.addEventListener('mousedown', (event) => {
     }
 });
 
+// Lytter etter musens bevegelser i vinduet
 window.addEventListener('mousemove', (event) => {
-    if (isDragging) { // Hvis kuben dras
+    // Sjekk om kuben er i ferd med å bli dratt
+    if (isDragging) { 
+        // Oppdater musens posisjon i normaliserte enheter (-1 til 1)
         const mouse = new THREE.Vector2(
-            (event.clientX / window.innerWidth) * 2 - 1, // Oppdater musekoordinater (X)
-            -(event.clientY / window.innerHeight) * 2 + 1 // Oppdater musekoordinater (Y)
+            (event.clientX / window.innerWidth) * 2 - 1, // Normalisert X-koordinat basert på vinduets bredde
+            -(event.clientY / window.innerHeight) * 2 + 1 // Normalisert Y-koordinat basert på vinduets høyde
         );
 
+        // Opprett en ny Raycaster for å kalkulere kollisjoner og skjæringspunkt
         const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera(mouse, camera); // Oppdater raycaster
+        // Sett strålen basert på musekoordinatene og kameraets synsvinkel
+        raycaster.setFromCamera(mouse, camera);
 
-        const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Plan for dra-operasjonen
+        // Definer et dra-plan parallelt med X-Y-planet (normalvektor: (0, 0, 1))
+        const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
+        // Variabel for å lagre skjæringspunktet mellom strålen og dra-planet
         const dragIntersect = new THREE.Vector3();
 
-        raycaster.ray.intersectPlane(dragPlane, dragIntersect); // Finn skjæringspunkt på planet
-        cube.position.set(dragIntersect.x - dragOffset.x, dragIntersect.y - dragOffset.y, cube.position.z); // Oppdater kubens posisjon
+        // Finn skjæringspunktet mellom strålen fra kameraet og dra-planet
+        raycaster.ray.intersectPlane(dragPlane, dragIntersect);
+
+        // Oppdater kubens posisjon i X og Y basert på skjæringspunktet
+        cube.position.set(
+            dragIntersect.x - dragOffset.x, // X-posisjon justert med forskyvning
+            dragIntersect.y - dragOffset.y, // Y-posisjon justert med forskyvning
+            cube.position.z // Hold Z-posisjonen konstant (ingen endring)
+        );
     }
+});
+
 });
 
 window.addEventListener('mouseup', () => {
